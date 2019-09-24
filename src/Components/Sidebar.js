@@ -1,10 +1,7 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import '../.././src/App.css';
 import Button from './Button';
 import Placeholder from './Placeholder';
-
-import { onFold } from '../models/App/app.actions.creator';
 
 function Sidebar(props){
 
@@ -63,11 +60,4 @@ function Sidebar(props){
         );
     }
 
-const mapDispatchToProps = (dispatch) => ({
-    onFold: () => {
-        alert('You lose :(');
-        dispatch(onFold());
-    }
-    });
-
-export default connect(null, mapDispatchToProps)(Sidebar);
+export default Sidebar;
