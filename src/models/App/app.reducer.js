@@ -38,7 +38,7 @@ export const initialState = {
 };
 
 /**
- * A function that receives an action and changed the state
+ * A function that receives an action and changes the state
  * @param {*} state the state that will be transformed byt the reducer
  * @param {*} action the action that is responsible for the state change
  */
@@ -71,7 +71,6 @@ export default function (state = initialState, action) {
     }
     case (CALL): {
       let result = createDeck.compareTwoHands(handevaluation.getEvaluationResult(state.playerHand), handevaluation.getEvaluationResult(state.npcHand)); 
-      console.log(state.playerHand, state.npcHand)
       if (result === 100){
         return {
           ...state,
@@ -89,7 +88,7 @@ export default function (state = initialState, action) {
       else {
         return {
           ...state
-        }
+        };
       }
     }
     default: {

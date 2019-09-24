@@ -44,7 +44,6 @@ class App extends Component {
     this.startNewGame = this.startNewGame.bind(this);
     this.changeCards = this.changeCards.bind(this);
     this.receiveRaiseInfo = this.receiveRaiseInfo.bind(this);
-
   }
 
   getCardInfoFromChild(dataFromChild) {
@@ -87,8 +86,6 @@ class App extends Component {
     }
     indexes = [];
   }
-
-  
 
   receiveRaiseInfo(dataFromChild) {
     this.setState({
@@ -175,22 +172,22 @@ class App extends Component {
   }
 }
 
+const mapStateToProps = (state) => ({
+  playerHand: getPlayerHand(state.app),
+  npcHand: getNpcHand(state.app),
+  playerBet: getPlayerBet(state.app),
+  npcBet: getNpcBet(state.app)
+});
+
 const mapDispatchToProps = (dispatch) => ({
   onFold: () => {
-      alert('You lose :(');
-      dispatch(onFold());
+    alert('You lose :(');
+    dispatch(onFold());
   },
-  onCall: () => {
-    dispatch(onCall());
+  onCall: (payload) => {
+    dispatch(onCall(payload));
   }
-  });
-
-  const mapStateToProps = (state) => ({
-    playerHand: getPlayerHand(state.app),
-    npcHand: getNpcHand(state.app),
-    playerBet: getPlayerBet(state.app),
-    npcBet: getNpcBet(state.app)
-  });
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);
 

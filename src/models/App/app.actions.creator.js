@@ -65,6 +65,6 @@ export const onFold = () => ({
 export const onCall = (payload) => ({
   type: CALL,
   payload
-})
+});
 
 // #endregion Action Creators
