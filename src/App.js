@@ -7,7 +7,8 @@ import ChangeUserBalanceButton from './Components/ChangeUserBalanceButton';
 import handevaluation from './utils/handevaluation';
 import createDeck from './utils/createDeck';
 
-import { onFold } from './models/App/app.actions.creator';
+import { onFold, onCall } from './models/App/app.actions.creator';
+import { getPlayerHand, getNpcHand, getNpcBet, getPlayerBet } from './models/App/app.stateSelectors';
 
 const deck = createDeck.shuffleDeck(createDeck.generateDeck());
 let indexes = [];
@@ -39,7 +40,7 @@ class App extends Component {
     };
     this.getCardInfoFromChild = this.getCardInfoFromChild.bind(this);
     this.onRaise = this.onRaise.bind(this);
-    this.onCall = this.onCall.bind(this);
+    // this.onCall = this.onCall.bind(this);
     this.startNewGame = this.startNewGame.bind(this);
     this.changeCards = this.changeCards.bind(this);
     this.receiveRaiseInfo = this.receiveRaiseInfo.bind(this);
@@ -87,17 +88,7 @@ class App extends Component {
     indexes = [];
   }
 
-  onCall() {
-    let result = createDeck.compareTwoHands(handevaluation.getEvaluationResult(this.state.playerHand), handevaluation.getEvaluationResult(this.state.npcHand));
-    if (result === 100) this.setState({
-      playerWins: true,
-      currentPlayerBalance: this.state.currentPlayerBalance + this.state.playerBet + this.state.npcBet
-    });
-    if (result === 0) this.setState({
-      npcWins: true,
-      currentNpcBalance: this.state.currentNpcBalance + this.state.playerBet + this.state.npcBet
-    });
-  }
+  
 
   receiveRaiseInfo(dataFromChild) {
     this.setState({
@@ -156,7 +147,7 @@ class App extends Component {
         <Sidebar
           readOnly={false}
           onRaise={this.onRaise}
-          onCall={this.onCall}
+          onCall={this.props.onCall}
           onFold={this.props.onFold}
           totalBet={this.state.totalBet}
           playerBet={this.state.playerBet}
@@ -188,8 +179,18 @@ const mapDispatchToProps = (dispatch) => ({
   onFold: () => {
       alert('You lose :(');
       dispatch(onFold());
+  },
+  onCall: () => {
+    dispatch(onCall());
   }
   });
 
-export default connect(null, mapDispatchToProps)(App);
+  const mapStateToProps = (state) => ({
+    playerHand: getPlayerHand(state.app),
+    npcHand: getNpcHand(state.app),
+    playerBet: getPlayerBet(state.app),
+    npcBet: getNpcBet(state.app)
+  });
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);
 

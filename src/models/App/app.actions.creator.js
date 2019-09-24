@@ -62,4 +62,9 @@ export const onFold = () => ({
   type: FOLD
 });
 
+export const onCall = (payload) => ({
+  type: CALL,
+  payload
+})
+
 // #endregion Action Creators

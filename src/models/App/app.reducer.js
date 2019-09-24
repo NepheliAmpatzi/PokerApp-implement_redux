@@ -1,3 +1,6 @@
+import handevaluation from '../../utils/handevaluation';
+import createDeck from '../../utils/createDeck';
+
 import {
   CHANGE_PLAYER_BALANCE,
   RAISE,
@@ -8,6 +11,7 @@ import {
 import {
   getPlayerBalance
 } from './app.stateSelectors';
+
 
 export const initialState = {
   app: {
@@ -66,10 +70,27 @@ export default function (state = initialState, action) {
       };
     }
     case (CALL): {
-      return {
-        ...state
-
-      };
+      let result = createDeck.compareTwoHands(handevaluation.getEvaluationResult(state.playerHand), handevaluation.getEvaluationResult(state.npcHand)); 
+      console.log(state.playerHand, state.npcHand)
+      if (result === 100){
+        return {
+          ...state,
+          playerWins: true,
+          currentPlayerBalance: state.currentPlayerBalance + state.playerBet + state.npcBet
+        };
+      }
+      else if (result === 0){
+        return {
+          ...state,
+          npcWins: true,
+          currentNpcBalance: state.currentNpcBalance + state.playerBet + state.npcBet
+        };
+      }
+      else {
+        return {
+          ...state
+        }
+      }
     }
     default: {
       return state;
