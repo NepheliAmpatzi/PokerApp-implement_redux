@@ -1,10 +1,13 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import './App.css';
 import Sidebar from './Components/Sidebar';
 import Hand from './Components/Hand';
 import ChangeUserBalanceButton from './Components/ChangeUserBalanceButton';
 import handevaluation from './utils/handevaluation';
 import createDeck from './utils/createDeck';
+
+import { onFold } from './models/App/app.actions.creator';
 
 const deck = createDeck.shuffleDeck(createDeck.generateDeck());
 let indexes = [];
@@ -154,7 +157,7 @@ class App extends Component {
           readOnly={false}
           onRaise={this.onRaise}
           onCall={this.onCall}
-          onFold={this.onFold}
+          onFold={this.props.onFold}
           totalBet={this.state.totalBet}
           playerBet={this.state.playerBet}
           npcBet={this.state.npcBet}
@@ -181,5 +184,12 @@ class App extends Component {
   }
 }
 
-export default App;
+const mapDispatchToProps = (dispatch) => ({
+  onFold: () => {
+      alert('You lose :(');
+      dispatch(onFold());
+  }
+  });
+
+export default connect(null, mapDispatchToProps)(App);
 
