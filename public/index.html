@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>CSS Playing Cards</title>
+    <link rel="stylesheet" type="text/css" href="App.css" media="screen" />
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('.options').addClass('active');
+            $('.toggle li').click(function() {
+                $('.playingCards').toggleClass($(this).text());
+            });
+            $('.lang li').click(function() {
+                $('html').attr('lang', $(this).text());
+                $('html').attr('xml:lang', $(this).text());
+            });
+        });
+    </script>
+    <style type="text/css">
+        /* body {
+            height: 90px;
+        } */
+        .options.active {
+            position: fixed;
+            top: 1em;
+            right: 1em;
+            background: #ddd;
+            padding: .5em;
+        }
+        
+        .options.active h3 {
+            font-size: 1.2em;
+        }
+        
+        .options.active ul {
+            padding: 0;
+        }
+        
+        .options.active li {
+            color: #00c;
+            text-decoration: underline;
+            margin-left: 1.5em;
+            cursor: pointer;
+        }
+        
+        .options.active li:hover {
+            text-decoration: none;
+        }
+        
+        div.clear {
+            clear: both;
+            height: 0;
+            line-height: 0;
+            font-size: 1px;
+            visibility: hidden;
+        }
+    </style>
+</head>
+  </head>
+  <body>
+    <div id="root"></div>
+    <!--
+      This HTML file is a template.
+      If you open it directly in the browser, you will see an empty page.
+
+      You can add webfonts, meta tags, or analytics to this file.
+      The build step will place the bundled scripts into the <body> tag.
+
+      To begin the development, run `npm start`.
+      To create a production bundle, use `npm run build`.
+    -->
+  </body>
+</html>
