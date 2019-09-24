@@ -1,12 +1,15 @@
 import React from 'react';
-import '../.././src/App.css'
+import { connect } from 'react-redux';
+import '../.././src/App.css';
 import Button from './Button';
 import Placeholder from './Placeholder';
+
+import { onFold } from '../models/App/app.actions.creator';
 
 function Sidebar(props){
 
     function receiveRaiseAmount(dataFromChild){
-        props.sendInfo(dataFromChild)
+        props.sendInfo(dataFromChild);
     }
 
         return (
@@ -60,4 +63,11 @@ function Sidebar(props){
         );
     }
 
-export default Sidebar;
+const mapDispatchToProps = (dispatch) => ({
+    onFold: () => {
+        alert('You lose :(');
+        dispatch(onFold());
+    }
+    });
+
+export default connect(null, mapDispatchToProps)(Sidebar);
