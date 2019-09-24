@@ -60,6 +60,6 @@ export const onRaise = (payload) => ({
 
 export const onFold = () => ({
   type: FOLD
-})
+});
 
 // #endregion Action Creators

@@ -6,7 +6,6 @@ import ChangeUserBalanceButton from './Components/ChangeUserBalanceButton';
 import handevaluation from './utils/handevaluation';
 import createDeck from './utils/createDeck';
 
-
 const deck = createDeck.shuffleDeck(createDeck.generateDeck());
 let indexes = [];
 let selectedCards = [];
@@ -38,7 +37,6 @@ class App extends Component {
     this.getCardInfoFromChild = this.getCardInfoFromChild.bind(this);
     this.onRaise = this.onRaise.bind(this);
     this.onCall = this.onCall.bind(this);
-    this.onFold = this.onFold.bind(this);
     this.startNewGame = this.startNewGame.bind(this);
     this.changeCards = this.changeCards.bind(this);
     this.receiveRaiseInfo = this.receiveRaiseInfo.bind(this);
@@ -95,14 +93,6 @@ class App extends Component {
     if (result === 0) this.setState({
       npcWins: true,
       currentNpcBalance: this.state.currentNpcBalance + this.state.playerBet + this.state.npcBet
-    });
-  }
-
-  onFold() {
-    alert('You lose :(');
-    this.setState({
-      npcWins: true,
-      disableBtn: true
     });
   }
 
@@ -192,3 +182,4 @@ class App extends Component {
 }
 
 export default App;
+

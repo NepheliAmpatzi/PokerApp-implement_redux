@@ -1,7 +1,8 @@
 import {
   CHANGE_PLAYER_BALANCE,
   RAISE,
-  FOLD
+  FOLD,
+  CALL
 } from './app.actions.creator';
 
 import {
@@ -60,15 +61,15 @@ export default function (state = initialState, action) {
     case (FOLD): {
       return {
         ...state,
-        npcWins: true,
-        disableBtn: true
-      }
+        disableBtn: true,
+        npcWins: true
+      };
     }
     case (CALL): {
       return {
         ...state
 
-      }
+      };
     }
     default: {
       return state;
