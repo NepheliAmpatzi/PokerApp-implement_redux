@@ -20,7 +20,7 @@ class Card extends Component{
     }
 
     getCardCss(num, suit) {
-        return "rank-"+num.toString().toLowerCase()+" "+suit;
+        return 'rank-'+num.toString().toLowerCase()+' '+suit;
     }
 
     getSuitSymbol(suit){
@@ -36,29 +36,29 @@ class Card extends Component{
     }
 
     selectedCard(){
-        this.setState({cardInfo: this.cardinformation})
-        this.props.receiveCardInformation(this.cardinformation)
+        this.setState({cardInfo: this.cardinformation});
+        this.props.receiveCardInformation(this.cardinformation);
 
     }
     render(){
-    const {NumberL, SuitL} = handevaluation.getCardLiteralsFromCardCode(this.props.cardCode);
-    return (
-        <div className="playingCards fourColours ">
-            <a
-            onClick={this.selectedCard}
-            className={this.props.npc ?
-             "card back" : 
-            this.state.cardInfo.selected &&
-            this.props.selectedCards.length <=3 &&
-            this.props.player.includes(this.state.cardInfo.cardCode) &&
-            Object.values(this.props.selectedCardOccurencies).every(value => value === 1) ?
-                "selected-card card " + this.getCardCss(NumberL, SuitL) : "card " + this.getCardCss(NumberL, SuitL)}>
-                <span className="rank">{NumberL}</span>
-                <span className="suit">{this.getSuitSymbol(SuitL)}</span>
-            </a>
-        </div>
-    )
-}
+        const {NumberL, SuitL} = handevaluation.getCardLiteralsFromCardCode(this.props.cardCode);
+        return (
+            <div className="playingCards fourColours ">
+                <a
+                onClick={this.selectedCard}
+                className={this.props.npc ?
+                'card back' : 
+                this.state.cardInfo.selected &&
+                this.props.selectedCards.length <=3 &&
+                this.props.player.includes(this.state.cardInfo.cardCode) &&
+                Object.values(this.props.selectedCardOccurencies).every(value => value === 1) ?
+                    'selected-card card ' + this.getCardCss(NumberL, SuitL) : 'card ' + this.getCardCss(NumberL, SuitL)}>
+                    <span className="rank">{NumberL}</span>
+                    <span className="suit">{this.getSuitSymbol(SuitL)}</span>
+                </a>
+            </div>
+        );
+    }
 }
         
 
