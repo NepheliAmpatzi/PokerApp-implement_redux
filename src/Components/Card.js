@@ -1,11 +1,11 @@
 import React, {Component} from 'react';
-import '../.././src/App.css'
-import handevaluation from '../utils/handevaluation';
+import '../.././src/App.css';
+import handevaluation from '../utils/handEvaluation';
 
 
 class Card extends Component{
     constructor(props){
-        super(props)
+        super(props);
         this.state = {
             cardInfo: {
                 cardCode: this.props.cardCode,
@@ -15,7 +15,7 @@ class Card extends Component{
         this.cardinformation = {
             cardCode: this.props.cardCode, 
             selected: true
-        }
+        };
         this.selectedCard = this.selectedCard.bind(this);
     }
 

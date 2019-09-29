@@ -3,11 +3,9 @@ import { connect } from 'react-redux';
 import './App.css';
 import Sidebar from './Components/Sidebar';
 import Hand from './Components/Hand';
-import ChangeUserBalanceButton from './Components/ChangeUserBalanceButton';
-import handevaluation from './utils/handevaluation';
 import createDeck from './utils/createDeck';
 
-import { onFold, onCall } from './models/App/app.actions.creator';
+import { fold, call, raise, startNewGame } from './models/App/app.actions.creator';
 import { getPlayerHand, getNpcHand, getNpcBet, getPlayerBet } from './models/App/app.stateSelectors';
 
 const deck = createDeck.shuffleDeck(createDeck.generateDeck());
@@ -22,7 +20,7 @@ class App extends Component {
       npcHand: createDeck.drawCards(deck, 5),
       deck: deck,
       indexOccurencies: {},
-      uniqueselectedCards: [],
+      uniqueSelectedCards: [],
       raiseAmount: '',
       npcBet: '',
       playerBet: '',
@@ -40,8 +38,6 @@ class App extends Component {
     };
     this.getCardInfoFromChild = this.getCardInfoFromChild.bind(this);
     this.onRaise = this.onRaise.bind(this);
-    // this.onCall = this.onCall.bind(this);
-    this.startNewGame = this.startNewGame.bind(this);
     this.changeCards = this.changeCards.bind(this);
     this.receiveRaiseInfo = this.receiveRaiseInfo.bind(this);
   }
@@ -50,16 +46,16 @@ class App extends Component {
     let occurencies;
     if (dataFromChild.selected) {
       selectedCards.push(dataFromChild.cardCode);
-      const uniquepickedcards = [...new Set(selectedCards)];
+      const uniquePickedCards = [...new Set(selectedCards)];
       indexes.push(this.state.playerHand.indexOf(dataFromChild.cardCode));
       occurencies = this.giveSelectedCardIndexesOccurencies(indexes);
       this.setState({
         cardInfo: dataFromChild,
-        uniqueselectedCards: uniquepickedcards,
+        uniqueSelectedCards: uniquePickedCards,
         indexOccurencies: occurencies
       });
       if (dataFromChild.selected
-        && uniquepickedcards.length <= 3
+        && uniquePickedCards.length <= 3
         && Object.values(occurencies).every(value => value === 1)) {
         this.setState({ disableBtn: false });
       }
@@ -75,10 +71,10 @@ class App extends Component {
   }
 
   changeCards() {
-    let uniquecards = this.state.uniqueselectedCards;
-    let randomCards = createDeck.drawCards(this.state.deck, uniquecards.length);
-    if (this.state.cardInfo.selected && this.state.uniqueselectedCards.length <= 3) {
-      let playerhand = this.state.playerHand.map(card => uniquecards.includes(card) ? randomCards.pop() : card);
+    let uniqueCards = this.state.uniqueSelectedCards;
+    let randomCards = createDeck.drawCards(this.state.deck, uniqueCards.length);
+    if (this.state.cardInfo.selected && this.state.uniqueSelectedCards.length <= 3) {
+      let playerhand = this.state.playerHand.map(card => uniqueCards.includes(card) ? randomCards.pop() : card);
       this.setState({
         playerHand: playerhand,
         disableBtn: true
@@ -108,30 +104,9 @@ class App extends Component {
     });
   }
 
-  async startNewGame() {
-    await this.setState({
-      playerHand: createDeck.drawCards(createDeck.shuffleDeck(createDeck.generateDeck()), 5),
-      npcHand: createDeck.drawCards(createDeck.shuffleDeck(createDeck.generateDeck()), 5),
-      disableBtn: true,
-      indexOccurencies: {},
-      uniqueselectedCards: [],
-      npcBet: '',
-      playerBet: '',
-      totalBet: '',
-      playerWins: false,
-      npcWins: false,
-      tie: false,
-      cardInfo: {
-        cardCode: null,
-        selected: false
-      }
-    });
-  }
-
   render() {
     return (
       <div className="app-style">
-        <ChangeUserBalanceButton /> {/* TODO: For REDUX TESTING PURPOSES, REMOVE LATER*/}
         <Hand
           labelStyle="npc-label-style"
           label="NPC Balance"
@@ -143,13 +118,13 @@ class App extends Component {
         />
         <Sidebar
           readOnly={false}
-          onRaise={this.onRaise}
-          onCall={this.props.onCall}
+          onRaise={this.props.onRaise}
+          onCall={() => this.props.onCall(this.props.playerHand, this.props.npcHand, this.props.playerBet, this.props.npcBet)}
           onFold={this.props.onFold}
           totalBet={this.state.totalBet}
           playerBet={this.state.playerBet}
           npcBet={this.state.npcBet}
-          startNewGame={this.startNewGame}
+          startNewGame={this.props.startNewGame}
           disableBtn={this.state.disableBtn}
           changeCards={this.changeCards}
           emptyInputs={this.state.npcBet}
@@ -163,7 +138,7 @@ class App extends Component {
           cards={this.state.playerHand}
           receiveCardInformation={this.getCardInfoFromChild}
           value={this.state.currentPlayerBalance}
-          selectedCards={this.state.uniqueselectedCards}
+          selectedCards={this.state.uniqueSelectedCards}
           player={this.state.playerHand}
           selectedCardOccurencies={this.state.indexOccurencies}
         />
@@ -182,10 +157,16 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   onFold: () => {
     alert('You lose :(');
-    dispatch(onFold());
+    dispatch(fold());
   },
-  onCall: (payload) => {
-    dispatch(onCall(payload));
+  onCall: payload => {
+    dispatch(call(payload));
+  },
+  onRaise: payload => {
+    dispatch(raise(payload));
+  },
+  startNewGame: () => {
+    dispatch(startNewGame());
   }
 });
 

@@ -1,11 +1,12 @@
-import handevaluation from '../../utils/handevaluation';
+import handEvaluation from '../../utils/handEvaluation';
 import createDeck from '../../utils/createDeck';
 
 import {
   CHANGE_PLAYER_BALANCE,
   RAISE,
   FOLD,
-  CALL
+  CALL,
+  START_NEW_GAME
 } from './app.actions.creator';
 
 import {
@@ -70,7 +71,7 @@ export default function (state = initialState, action) {
       };
     }
     case (CALL): {
-      let result = createDeck.compareTwoHands(handevaluation.getEvaluationResult(state.playerHand), handevaluation.getEvaluationResult(state.npcHand)); 
+      let result = createDeck.compareTwoHands(handEvaluation.getEvaluationResult(state.playerHand), handEvaluation.getEvaluationResult(state.npcHand)); 
       if (result === 100){
         return {
           ...state,
@@ -90,6 +91,26 @@ export default function (state = initialState, action) {
           ...state
         };
       }
+    }
+    case (START_NEW_GAME): {
+      return{
+        ...state,
+        playerHand: createDeck.drawCards(createDeck.shuffleDeck(createDeck.generateDeck()), 5),
+        npcHand: createDeck.drawCards(createDeck.shuffleDeck(createDeck.generateDeck()), 5),
+        disableBtn: true,
+        indexOccurencies: {},
+        uniqueSelectedCards: [],
+        npcBet: '',
+        playerBet: '',
+        totalBet: '',
+        playerWins: false,
+        npcWins: false,
+        tie: false,
+        cardInfo: {
+          cardCode: null,
+          selected: false
+        }
+      };
     }
     default: {
       return state;
