@@ -123,18 +123,21 @@ body {
   }
 
   .player-label-style {
-    margin-left: -3%;
-    margin-bottom: 1vh;
+    margin-left: 20%;
+    margin-bottom: 1%;
     color: white;
   }
 
   .npc-label-style {
+    margin-left: 20%;
+    margin-top: 2%;
     color: white;
   }
   .npc-placeholder {
     width: 150px;
     height: 30px;
-    margin: 7% 20px 0 -30px;
+    margin-left: 20%;
+    margin-top: 1%;
     text-align: center;
     font-size: 16px;
     font-weight: bold;
@@ -143,7 +146,7 @@ body {
   .player-placeholder {
     width: 150px;
     height: 30px;
-    margin: 0 20px 10% -30px;
+    margin-left: 20%;
     text-align: center;
     font-size: 16px;
     font-weight: bold;

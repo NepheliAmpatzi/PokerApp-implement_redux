@@ -15,8 +15,8 @@ import {
 
 export const initialState = {
   app: {
-    playerHand: [],
-    npcHand: [],
+    playerHand: createDeck.drawCards(createDeck.shuffleDeck(createDeck.generateDeck()), 5),
+    npcHand: createDeck.drawCards(createDeck.shuffleDeck(createDeck.generateDeck()), 5),
     deck: [],
     indexOccurencies: {},
     uniqueselectedCards: [],
