@@ -12,11 +12,12 @@ function Placeholder(props) {
       type="number"
       npc={props.npc}
       value={props.value}
-      onChange={raiseInputCb}
+      onChange={(value)=>raiseInputCb(value)}
       readOnly={props.readOnly}>
     </input>
   );
 
 }
+//(value) => onValueChangeHandler(value)
 
 export default Placeholder;

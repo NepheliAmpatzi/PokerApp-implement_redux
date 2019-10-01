@@ -14,6 +14,8 @@ export const getNpcBalance = (state) => state.currentNpcBalance;
 export const getPlayerBet = (state) => state.playerBet;
 
 export const getNpcBet = (state) => state.npcBet;
+
+export const getRaiseAmount = (state) => state.raiseAmount;
 /**
  * @param {State} state
  * @returns {number[]} a new shallow copy of player hand because array is an object.

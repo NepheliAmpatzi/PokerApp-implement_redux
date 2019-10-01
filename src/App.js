@@ -8,8 +8,8 @@ import ChangeUserBalanceButton from './Components/ChangeUserBalanceButton';
 import handevaluation from './utils/handevaluation';
 import createDeck from './utils/createDeck';
 
-import { onFold, onCall } from './models/App/app.actions.creator';
-import { getPlayerHand, getNpcHand, getNpcBet, getPlayerBet } from './models/App/app.stateSelectors';
+import { onFold, onCall, onPlayerRaise } from './models/App/app.actions.creator';
+import { getPlayerHand, getNpcHand, getNpcBet, getPlayerBet, getNpcBalance, getPlayerBalance, getRaiseAmount } from './models/App/app.stateSelectors';
 
 const deck = createDeck.shuffleDeck(createDeck.generateDeck());
 let indexes = [];
@@ -116,14 +116,14 @@ class App extends Component {
   }
 
   render() {
-    const { playerHand, npcHand, playerBet, npcBet, onCall } = this.props;
+    const { playerHand, npcHand, playerBet, npcBet, onCall, onPlayerRaise, currentNpcBalance, currentPlayerBalance } = this.props;
     return (
       <div className="app-style">
         <ChangeUserBalanceButton /> {/* TODO: For REDUX TESTING PURPOSES, REMOVE LATER*/}
         <div className={"npc-label-style"}>NPC Balance</div>
           <Placeholder
             CSSclass={"npc-placeholder"}
-            value={this.state.currentNpcBalance}
+            value={currentNpcBalance}
             readOnly={true}
           />
         <Hand
@@ -134,8 +134,9 @@ class App extends Component {
         />
         <Sidebar
           readOnly={false}
-          onCall={() => onCall({ playerHand, npcHand, playerBet, npcBet })}
+          onCall={()=> onCall({playerHand, npcHand, playerBet, npcBet})}
           onFold={this.props.onFold}
+          onRaise={()=>onPlayerRaise({playerBet, npcBet, currentNpcBalance, currentPlayerBalance})}
           startNewGame={this.startNewGame}
           disableBtn={this.state.disableBtn}
           changeCards={this.changeCards}
@@ -146,7 +147,7 @@ class App extends Component {
           <div className={"player-label-style"}>Player Balance</div>
             <Placeholder
                 CSSclass={"player-placeholder"}
-                value={this.state.currentPlayerBalance}
+                value={currentPlayerBalance}
                 readOnly={true}
                 />
             <Hand
@@ -167,7 +168,10 @@ const mapStateToProps = (state) => ({
   playerHand: getPlayerHand(state.app),
   npcHand: getNpcHand(state.app),
   playerBet: getPlayerBet(state.app),
-  npcBet: getNpcBet(state.app)
+  npcBet: getNpcBet(state.app),
+  currentNpcBalance: getNpcBalance(state.app),
+  currentPlayerBalance: getPlayerBalance(state.app),
+  amountRaised: getRaiseAmount(state.app)
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -177,7 +181,7 @@ const mapDispatchToProps = (dispatch) => ({
   },
   onCall: (payload) => {
     dispatch(onCall(payload));
-  }
+  },
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

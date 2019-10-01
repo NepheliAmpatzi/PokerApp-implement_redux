@@ -2,6 +2,11 @@ import React, { Component } from 'react';
 import '../.././src/App.css';
 import Button from './Button';
 import Placeholder from './Placeholder';
+import { connect } from 'react-redux';
+
+import {onPlayerRaise } from '../models/App/app.actions.creator';
+import {getNpcBet, getPlayerBet, getNpcBalance, getPlayerBalance, getRaiseAmount } from '../models/App/app.stateSelectors';
+
 
 class Sidebar extends Component{
     constructor(props){
@@ -42,12 +47,13 @@ class Sidebar extends Component{
     }
 
     render(){
+        const {playerBet, npcBet, currentNpcBalance, currentPlayerBalance, amountRaised} = this.props;
         return (
             <div className="gameplay-button-group">
                 <Button
                     CSSclass='raise-btn'
                     name='Raise'
-                    onClick={this.onRaise}/>
+                    onClick={() => onPlayerRaise({ playerBet, npcBet, currentNpcBalance, currentPlayerBalance, amountRaised })}/>
                 <Placeholder
                     CSSclass='raise-placeholder'
                     parentCb={this.receiveRaiseAmount}
@@ -66,13 +72,13 @@ class Sidebar extends Component{
                 <Placeholder
                     CSSclass='bet-placeholder'
                     readOnly={true}
-                    value={this.state.npcBet}
+                    value={npcBet}
                     />
                 <div className='text-style'>Player bet</div>
                 <Placeholder
                     CSSclass='bet-placeholder'
                     readOnly={true}
-                    value={this.state.playerBet}
+                    value={playerBet}
                     />
                 <div className='text-style'>Total amount</div>
                 <Placeholder
@@ -94,5 +100,19 @@ class Sidebar extends Component{
     }
         
     }
+    const mapDispatchToProps = (dispatch) => ({
+        onPlayerRaise: (payload) => {
+          dispatch(onPlayerRaise(payload))
+        }
+      });
+      const mapStateToProps = (state) => ({
+        playerBet: getPlayerBet(state.app),
+        npcBet: getNpcBet(state.app),
+        currentNpcBalance: getNpcBalance(state.app),
+        currentPlayerBalance: getPlayerBalance(state.app),
+        amountRaised: getRaiseAmount(state.app)
+      });
+      
 
-export default Sidebar;
+
+export default connect(mapStateToProps, mapDispatchToProps)(Sidebar);

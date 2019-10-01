@@ -5,11 +5,12 @@ import {
   CHANGE_PLAYER_BALANCE,
   RAISE,
   FOLD,
-  CALL
+  CALL,
+  ON_PLAYER_RAISE
 } from './app.actions.creator';
 
 import {
-  getPlayerBalance
+  getPlayerBalance, getNpcBalance, getRaiseAmount
 } from './app.stateSelectors';
 
 
@@ -20,7 +21,7 @@ export const initialState = {
     deck: [],
     indexOccurencies: {},
     uniqueselectedCards: [],
-    raiseAmount: 0,
+    raiseAmount: 10,
     npcBet: 0,
     playerBet: 0,
     totalBet: 0,
@@ -90,6 +91,12 @@ export default function (state = initialState, action) {
           ...state
         };
       }
+    }
+    case (ON_PLAYER_RAISE): {
+      const currentNpcBalance = getNpcBalance(state);
+      const currentPlayerBalance = getPlayerBalance(state);
+      const amountRaised = getRaiseAmount(state)
+      console.log(currentNpcBalance, currentPlayerBalance, amountRaised)
     }
     default: {
       return state;
