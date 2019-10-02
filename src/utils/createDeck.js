@@ -1,4 +1,4 @@
-import handevaluation from './handevaluation'
+import handEvaluation from './handEvaluation'
 
 function getRandomInt(min, max) {
     min = Math.ceil(min);
@@ -10,8 +10,8 @@ function getRandomInt(min, max) {
 
 function generateDeck(){
     const deck = [];
-    handevaluation.suits.forEach(suit => {
-        handevaluation.ranks.forEach(rank =>{
+    handEvaluation.suits.forEach(suit => {
+        handEvaluation.ranks.forEach(rank =>{
             deck.push(Number(rank.code.toString()+suit.code.toString()));
         });
     });

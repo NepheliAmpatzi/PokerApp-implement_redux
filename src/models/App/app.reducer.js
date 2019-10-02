@@ -1,4 +1,4 @@
-import handevaluation from '../../utils/handevaluation';
+import handEvaluation from '../../utils/handEvaluation';
 import createDeck from '../../utils/createDeck';
 
 import {
@@ -6,19 +6,21 @@ import {
   RAISE,
   FOLD,
   CALL,
-  ON_PLAYER_RAISE
+  ON_PLAYER_RAISE,
+  START_NEW_GAME
 } from './app.actions.creator';
 
 import {
   getPlayerBalance, getNpcBalance, getRaiseAmount
 } from './app.stateSelectors';
 
+const deck = createDeck.shuffleDeck(createDeck.generateDeck());
 
 export const initialState = {
   app: {
-    playerHand: createDeck.drawCards(createDeck.shuffleDeck(createDeck.generateDeck()), 5),
-    npcHand: createDeck.drawCards(createDeck.shuffleDeck(createDeck.generateDeck()), 5),
-    deck: [],
+    playerHand: createDeck.drawCards(createDeck.shuffleDeck(deck), 5),
+    npcHand: createDeck.drawCards(createDeck.shuffleDeck(deck), 5),
+    deck: deck,
     indexOccurencies: {},
     uniqueselectedCards: [],
     raiseAmount: 10,
@@ -53,6 +55,26 @@ export default function (state = initialState, action) {
         currentPlayerBalance,
       };
     }
+    case (START_NEW_GAME): {
+      return{
+        ...state,
+          playerHand: createDeck.drawCards(createDeck.shuffleDeck(deck), 5),
+          npcHand: createDeck.drawCards(createDeck.shuffleDeck(deck), 5),
+          disableBtn: true,
+          indexOccurencies: {},
+          uniqueselectedCards: [],
+          npcBet: '',
+          playerBet: '',
+          totalBet: '',
+          playerWins: false,
+          npcWins: false,
+          tie: false,
+          cardInfo: {
+            cardCode: null,
+            selected: false
+          }
+      }
+    }
     case (RAISE): {
       const amountRaised = action.payload;
       const playerBalance = getPlayerBalance(state);
@@ -71,7 +93,7 @@ export default function (state = initialState, action) {
       };
     }
     case (CALL): {
-      let result = createDeck.compareTwoHands(handevaluation.getEvaluationResult(state.playerHand), handevaluation.getEvaluationResult(state.npcHand)); 
+      let result = createDeck.compareTwoHands(handEvaluation.getEvaluationResult(state.playerHand), handEvaluation.getEvaluationResult(state.npcHand)); 
       if (result === 100){
         return {
           ...state,

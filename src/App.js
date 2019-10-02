@@ -5,38 +5,20 @@ import Sidebar from './Components/Sidebar';
 import Placeholder from './Components/Placeholder';
 import Hand from './Components/Hand';
 import ChangeUserBalanceButton from './Components/ChangeUserBalanceButton';
-import handevaluation from './utils/handevaluation';
 import createDeck from './utils/createDeck';
 
-import { onFold, onCall, onPlayerRaise } from './models/App/app.actions.creator';
+import { startNewGame, onFold, onCall, onPlayerRaise } from './models/App/app.actions.creator';
 import { getPlayerHand, getNpcHand, getNpcBet, getPlayerBet, getNpcBalance, getPlayerBalance, getRaiseAmount } from './models/App/app.stateSelectors';
 
-const deck = createDeck.shuffleDeck(createDeck.generateDeck());
 let indexes = [];
 let selectedCards = [];
 
 class App extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      playerHand: createDeck.drawCards(deck, 5),
-      npcHand: createDeck.drawCards(deck, 5),
-      deck: deck,
-      indexOccurencies: {},
-      uniqueselectedCards: [],
-      disableBtn: true,
-      currentNpcBalance: 1000,
-      currentPlayerBalance: 1000,
-      playerWins: false,
-      npcWins: false,
-      tie: false,
-      cardInfo: {
-        cardCode: null,
-        selected: false
-      }
-    };
+    this.state = props.appState;
+    
     this.getCardInfoFromChild = this.getCardInfoFromChild.bind(this);
-    this.startNewGame = this.startNewGame.bind(this);
     this.changeCards = this.changeCards.bind(this);
     this.receiveNpcBalanceInfo = this.receiveNpcBalanceInfo.bind(this);
     this.receivePlayerBalanceInfo = this.receivePlayerBalanceInfo.bind(this);
@@ -95,26 +77,6 @@ class App extends Component {
     })
   }
 
-  startNewGame() {
-    this.setState({
-      playerHand: createDeck.drawCards(createDeck.shuffleDeck(createDeck.generateDeck()), 5),
-      npcHand: createDeck.drawCards(createDeck.shuffleDeck(createDeck.generateDeck()), 5),
-      disableBtn: true,
-      indexOccurencies: {},
-      uniqueselectedCards: [],
-      npcBet: '',
-      playerBet: '',
-      totalBet: '',
-      playerWins: false,
-      npcWins: false,
-      tie: false,
-      cardInfo: {
-        cardCode: null,
-        selected: false
-      }
-    });
-  }
-
   render() {
     const { playerHand, npcHand, playerBet, npcBet, onCall, onPlayerRaise, currentNpcBalance, currentPlayerBalance } = this.props;
     return (
@@ -137,7 +99,7 @@ class App extends Component {
           onCall={()=> onCall({playerHand, npcHand, playerBet, npcBet})}
           onFold={this.props.onFold}
           onRaise={()=>onPlayerRaise({playerBet, npcBet, currentNpcBalance, currentPlayerBalance})}
-          startNewGame={this.startNewGame}
+          startNewGame={this.props.startNewGame}
           disableBtn={this.state.disableBtn}
           changeCards={this.changeCards}
           emptyInputs={this.state.npcBet}
@@ -165,13 +127,7 @@ class App extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  playerHand: getPlayerHand(state.app),
-  npcHand: getNpcHand(state.app),
-  playerBet: getPlayerBet(state.app),
-  npcBet: getNpcBet(state.app),
-  currentNpcBalance: getNpcBalance(state.app),
-  currentPlayerBalance: getPlayerBalance(state.app),
-  amountRaised: getRaiseAmount(state.app)
+  appState: state.app
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -182,6 +138,9 @@ const mapDispatchToProps = (dispatch) => ({
   onCall: (payload) => {
     dispatch(onCall(payload));
   },
+  startNewGame: () => {
+    dispatch(startNewGame());
+  }
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

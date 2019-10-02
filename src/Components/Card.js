@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import '../.././src/App.css'
-import handevaluation from '../utils/handevaluation';
+import handEvaluation from '../utils/handEvaluation';
 
 
 class Card extends Component{
@@ -41,7 +41,7 @@ class Card extends Component{
 
     }
     render(){
-    const {NumberL, SuitL} = handevaluation.getCardLiteralsFromCardCode(this.props.cardCode);
+    const {NumberL, SuitL} = handEvaluation.getCardLiteralsFromCardCode(this.props.cardCode);
     return (
         <div className="playingCards fourColours ">
             <a

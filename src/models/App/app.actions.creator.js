@@ -44,6 +44,10 @@ export const onCall = (payload) => ({
 export const onPlayerRaise = (payload) => ({
   type: ON_PLAYER_RAISE,
   payload
-})
+});
+
+export const startNewGame = () => ({
+  type: START_NEW_GAME
+});
 
 // #endregion Action Creators
