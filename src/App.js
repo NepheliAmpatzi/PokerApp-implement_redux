@@ -28,16 +28,16 @@ class App extends Component {
     let occurencies;
     if (dataFromChild.selected) {
       selectedCards.push(dataFromChild.cardCode);
-      const uniquepickedcards = [...new Set(selectedCards)];
+      const uniquePickedcards = [...new Set(selectedCards)];
       indexes.push(this.state.playerHand.indexOf(dataFromChild.cardCode));
       occurencies = this.giveSelectedCardIndexesOccurencies(indexes);
       this.setState({
         cardInfo: dataFromChild,
-        uniqueselectedCards: uniquepickedcards,
+        uniqueSelectedCards: uniquePickedcards,
         indexOccurencies: occurencies
       });
       if (dataFromChild.selected
-        && uniquepickedcards.length <= 3
+        && uniquePickedcards.length <= 3
         && Object.values(occurencies).every(value => value === 1)) {
         this.setState({ disableBtn: false });
       }
@@ -53,9 +53,9 @@ class App extends Component {
   }
 
   changeCards() {
-    let uniquecards = this.state.uniqueselectedCards;
+    let uniquecards = this.state.uniqueSelectedCards;
     let randomCards = createDeck.drawCards(this.state.deck, uniquecards.length);
-    if (this.state.cardInfo.selected && this.state.uniqueselectedCards.length <= 3) {
+    if (this.state.cardInfo.selected && this.state.uniqueSelectedCards.length <= 3) {
       let playerhand = this.state.playerHand.map(card => uniquecards.includes(card) ? randomCards.pop() : card);
       this.setState({
         playerHand: playerhand,
@@ -91,7 +91,7 @@ class App extends Component {
         <Hand
           CSSclass="npc-hand"
           npc={true}
-          cards={this.state.npcHand}
+          cards={this.props.npcHand}
           receiveCardInformation={this.getCardInfoFromChild}
         />
         <Sidebar
@@ -102,7 +102,7 @@ class App extends Component {
           startNewGame={this.props.startNewGame}
           disableBtn={this.state.disableBtn}
           changeCards={this.changeCards}
-          emptyInputs={this.state.npcBet}
+          emptyInputs={this.props.npcBet}
           sendNpcBalanceInfo={this.receiveNpcBalanceInfo}
           sendPlayerBalanceInfo={this.receivePlayerBalanceInfo}
         />
@@ -115,10 +115,10 @@ class App extends Component {
             <Hand
                 CSSclass="player-hand"
                 npc={false}
-                cards={this.state.playerHand}
+                cards={this.props.playerHand}
                 receiveCardInformation={this.getCardInfoFromChild}
-                selectedCards={this.state.uniqueselectedCards}
-                player={this.state.playerHand}
+                selectedCards={this.state.uniqueSelectedCards}
+                player={this.props.playerHand}
                 selectedCardOccurencies={this.state.indexOccurencies}
             />
         </div>
@@ -127,7 +127,14 @@ class App extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  appState: state.app
+  appState: state.app,
+  playerHand: getPlayerHand(state.app),
+  playerBet: getPlayerBet(state.app),
+  playerBalance: getPlayerBalance(state.app),
+  npcHand: getNpcHand(state.app),
+  npcBet: getNpcBet(state.app),
+  npcBalance: getNpcBalance(state.app),
+  raiseAmount: getRaiseAmount(state.app) 
 });
 
 const mapDispatchToProps = (dispatch) => ({

@@ -1,5 +1,10 @@
-import handEvaluation from '../../utils/handEvaluation';
-import createDeck from '../../utils/createDeck';
+import { getEvaluationResult } from '../../utils/handEvaluation';
+import { 
+  drawCards,
+  shuffleDeck,
+  generateDeck,
+  compareTwoHands, 
+} from '../../utils/createDeck';
 
 import {
   CHANGE_PLAYER_BALANCE,
@@ -14,15 +19,15 @@ import {
   getPlayerBalance, getNpcBalance, getRaiseAmount
 } from './app.stateSelectors';
 
-const deck = createDeck.shuffleDeck(createDeck.generateDeck());
+const deck = shuffleDeck(generateDeck());
 
 export const initialState = {
   app: {
-    playerHand: createDeck.drawCards(createDeck.shuffleDeck(deck), 5),
-    npcHand: createDeck.drawCards(createDeck.shuffleDeck(deck), 5),
+    playerHand: drawCards(shuffleDeck(deck), 5),
+    npcHand: drawCards(shuffleDeck(deck), 5),
     deck: deck,
     indexOccurencies: {},
-    uniqueselectedCards: [],
+    uniqueSelectedCards: [],
     raiseAmount: 10,
     npcBet: 0,
     playerBet: 0,
@@ -58,8 +63,8 @@ export default function (state = initialState, action) {
     case (START_NEW_GAME): {
       return{
         ...state,
-          playerHand: createDeck.drawCards(createDeck.shuffleDeck(deck), 5),
-          npcHand: createDeck.drawCards(createDeck.shuffleDeck(deck), 5),
+          playerHand: drawCards(shuffleDeck(deck), 5),
+          npcHand: drawCards(shuffleDeck(deck), 5),
           disableBtn: true,
           indexOccurencies: {},
           uniqueselectedCards: [],
@@ -93,7 +98,7 @@ export default function (state = initialState, action) {
       };
     }
     case (CALL): {
-      let result = createDeck.compareTwoHands(handEvaluation.getEvaluationResult(state.playerHand), handEvaluation.getEvaluationResult(state.npcHand)); 
+      let result = compareTwoHands(getEvaluationResult(state.playerHand), getEvaluationResult(state.npcHand)); 
       if (result === 100){
         return {
           ...state,

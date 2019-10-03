@@ -29,7 +29,7 @@ function shuffleDeck(deck){
     return shuffledDeck;
 }
 
-export function drawCards(shuffledDeck, num){
+function drawCards(shuffledDeck, num){
     return shuffledDeck.splice(0, num);
 }
 
@@ -48,7 +48,7 @@ function compareTwoHands(player, npc){
     }
 }
 
-export default {
+export {
     getRandomInt,
     shuffleDeck,
     generateDeck,
