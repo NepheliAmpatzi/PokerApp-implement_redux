@@ -4,7 +4,6 @@ import './App.css';
 import Sidebar from './Components/Sidebar';
 import Placeholder from './Components/Placeholder';
 import Hand from './Components/Hand';
-import ChangeUserBalanceButton from './Components/ChangeUserBalanceButton';
 import createDeck from './utils/createDeck';
 
 import { startNewGame, onFold, onCall, onPlayerRaise } from './models/App/app.actions.creator';
@@ -53,12 +52,12 @@ class App extends Component {
   }
 
   changeCards() {
-    let uniquecards = this.state.uniqueSelectedCards;
-    let randomCards = createDeck.drawCards(this.state.deck, uniquecards.length);
+    let uniqueCards = this.state.uniqueSelectedCards;
+    let randomCards = createDeck.drawCards(this.state.deck, uniqueCards.length);
     if (this.state.cardInfo.selected && this.state.uniqueSelectedCards.length <= 3) {
-      let playerhand = this.state.playerHand.map(card => uniquecards.includes(card) ? randomCards.pop() : card);
+      let playerHand = this.state.playerHand.map(card => uniqueCards.includes(card) ? randomCards.pop() : card);
       this.setState({
-        playerHand: playerhand,
+        playerHand: playerHand,
         disableBtn: true
       });
     }
@@ -78,53 +77,64 @@ class App extends Component {
   }
 
   render() {
-    const { playerHand, npcHand, playerBet, npcBet, onCall, onPlayerRaise, currentNpcBalance, currentPlayerBalance } = this.props;
+    const { 
+      playerHand,
+      npcHand,
+      playerBet,
+      npcBet,
+      onPlayerRaise,
+      currentNpcBalance,
+      currentPlayerBalance,
+      onCall,
+      onFold,
+      startNewGame
+    } = this.props;
+
     return (
       <div className="app-style">
-        <ChangeUserBalanceButton /> {/* TODO: For REDUX TESTING PURPOSES, REMOVE LATER*/}
         <div className={"npc-label-style"}>NPC Balance</div>
           <Placeholder
             CSSclass={"npc-placeholder"}
-            value={currentNpcBalance}
+            value={`${this.props.npcBalance}`}
             readOnly={true}
           />
-        <Hand
-          CSSclass="npc-hand"
-          npc={true}
-          cards={this.props.npcHand}
-          receiveCardInformation={this.getCardInfoFromChild}
-        />
-        <Sidebar
-          readOnly={false}
-          onCall={()=> onCall({playerHand, npcHand, playerBet, npcBet})}
-          onFold={this.props.onFold}
-          onRaise={()=>onPlayerRaise({playerBet, npcBet, currentNpcBalance, currentPlayerBalance})}
-          startNewGame={this.props.startNewGame}
-          disableBtn={this.state.disableBtn}
-          changeCards={this.changeCards}
-          emptyInputs={this.props.npcBet}
-          sendNpcBalanceInfo={this.receiveNpcBalanceInfo}
-          sendPlayerBalanceInfo={this.receivePlayerBalanceInfo}
-        />
+          <Hand
+            CSSclass="npc-hand"
+            npc={true}
+            cards={this.props.npcHand}
+            receiveCardInformation={this.getCardInfoFromChild}
+          />
+          <Sidebar
+            readOnly={false}
+            onCall={()=> onCall({playerHand, npcHand, playerBet, npcBet})}
+            onFold={onFold}
+            onRaise={()=>onPlayerRaise({playerBet, npcBet, currentNpcBalance, currentPlayerBalance})}
+            startNewGame={startNewGame}
+            disableBtn={this.state.disableBtn}
+            changeCards={this.changeCards}
+            emptyInputs={npcBet}
+            sendNpcBalanceInfo={this.receiveNpcBalanceInfo}
+            sendPlayerBalanceInfo={this.receivePlayerBalanceInfo}
+          />
           <div className={"player-label-style"}>Player Balance</div>
-            <Placeholder
-                CSSclass={"player-placeholder"}
-                value={currentPlayerBalance}
-                readOnly={true}
-                />
-            <Hand
-                CSSclass="player-hand"
-                npc={false}
-                cards={this.props.playerHand}
-                receiveCardInformation={this.getCardInfoFromChild}
-                selectedCards={this.state.uniqueSelectedCards}
-                player={this.props.playerHand}
-                selectedCardOccurencies={this.state.indexOccurencies}
-            />
+          <Placeholder
+              CSSclass={"player-placeholder"}
+              value={`${this.props.playerBalance}`}
+              readOnly={true}
+              />
+          <Hand
+              CSSclass="player-hand"
+              npc={false}
+              cards={this.props.playerHand}
+              receiveCardInformation={this.getCardInfoFromChild}
+              selectedCards={this.state.uniqueSelectedCards}
+              player={this.props.playerHand}
+              selectedCardOccurencies={this.state.indexOccurencies}
+          />
         </div>
-    );
+      );
+    }
   }
-}
 
 const mapStateToProps = (state) => ({
   appState: state.app,

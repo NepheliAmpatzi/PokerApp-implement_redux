@@ -50,7 +50,7 @@ export const initialState = {
  * @param {*} state the state that will be transformed byt the reducer
  * @param {*} action the action that is responsible for the state change
  */
-export default function (state = initialState, action) {
+export default (state = initialState, action) => {
   switch (action.type) {
     case (CHANGE_PLAYER_BALANCE): {
       const playerBalance = getPlayerBalance(state);
@@ -81,12 +81,10 @@ export default function (state = initialState, action) {
       }
     }
     case (RAISE): {
-      const amountRaised = action.payload;
-      const playerBalance = getPlayerBalance(state);
-      const currentPlayerBalance = playerBalance - amountRaised;
+      const currentPlayerBalance = getPlayerBalance(state) - getRaiseAmount(state);
       return {
         ...state,
-        raiseAmount: amountRaised,
+        raiseAmount: getRaiseAmount(state),
         currentPlayerBalance,
       };
     }

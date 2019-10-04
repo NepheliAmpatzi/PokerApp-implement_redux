@@ -24,12 +24,15 @@ export const changePlayerBalance = (payload) => ({
   payload,
 });
 
+export const startNewGame = () => ({
+  type: START_NEW_GAME
+});
+
 /**
  * @param {number} payload is the amount of raise
  */
-export const onRaise = (payload) => ({
+export const onRaise = () => ({
   type: RAISE,
-  payload,
 });
 
 export const onFold = () => ({
@@ -44,10 +47,6 @@ export const onCall = (payload) => ({
 export const onPlayerRaise = (payload) => ({
   type: ON_PLAYER_RAISE,
   payload
-});
-
-export const startNewGame = () => ({
-  type: START_NEW_GAME
 });
 
 // #endregion Action Creators
