@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
-import '../.././src/App.css';
-import handevaluation from '../utils/handEvaluation';
+import '../.././src/App.css'
+import handEvaluation from '../utils/handEvaluation';
 
 
 class Card extends Component{
@@ -41,24 +41,23 @@ class Card extends Component{
 
     }
     render(){
-        const {NumberL, SuitL} = handevaluation.getCardLiteralsFromCardCode(this.props.cardCode);
-        return (
-            <div className="playingCards fourColours ">
-                <a
-                onClick={this.selectedCard}
-                className={this.props.npc ?
-                'card back' : 
-                this.state.cardInfo.selected &&
-                this.props.selectedCards.length <=3 &&
-                this.props.player.includes(this.state.cardInfo.cardCode) &&
-                Object.values(this.props.selectedCardOccurencies).every(value => value === 1) ?
-                    'selected-card card ' + this.getCardCss(NumberL, SuitL) : 'card ' + this.getCardCss(NumberL, SuitL)}>
-                    <span className="rank">{NumberL}</span>
-                    <span className="suit">{this.getSuitSymbol(SuitL)}</span>
-                </a>
-            </div>
-        );
-    }
+    const {NumberL, SuitL} = handEvaluation.getCardLiteralsFromCardCode(this.props.cardCode);
+    return (
+        <div className="playingCards fourColours ">
+            <a
+            onClick={this.selectedCard}
+            className={this.props.npc ?
+             "card back" : 
+            this.state.cardInfo.selected &&
+            this.props.selectedCards.length <=3 &&
+            this.props.player.includes(this.state.cardInfo.cardCode) &&
+            Object.values(this.props.selectedCardOccurencies).every(value => value === 1) ?
+                "selected-card card " + this.getCardCss(NumberL, SuitL) : "card " + this.getCardCss(NumberL, SuitL)}>
+                <span className="rank">{NumberL}</span>
+                <span className="suit">{this.getSuitSymbol(SuitL)}</span>
+            </a>
+        </div>
+    )
 }
         
 
