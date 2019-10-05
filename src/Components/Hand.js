@@ -5,7 +5,6 @@ import Card from './Card';
 function Hand(props){
 
     function getCardInfoFromChild(cardInfo){
-        console.log(cardInfo)
         props.receiveCardInformation(cardInfo)
     }
 
