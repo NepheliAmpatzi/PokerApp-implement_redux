@@ -4,25 +4,24 @@ import Card from './Card';
 
 function Hand(props){
 
-function getCardInfoFromChild(cardInfo){
-    console.log(cardInfo)
-    props.receiveCardInformation(cardInfo)
-}
-
-        return (
-            <div className={props.CSSclass}>
-                {props.cards.map((card, i) => <Card
-                    selectedCardOccurencies={props.selectedCardOccurencies}
-                    receiveCardInformation={getCardInfoFromChild}
-                    key={i}
-                    selectedCards={props.selectedCards}
-                    player={props.player}
-                    npc={props.npc}
-                    cardCode={card}
-                    />)}
-            </div>
-        )
+    function getCardInfoFromChild(cardInfo){
+        props.receiveCardInformation(cardInfo)
     }
+
+    return (
+        <div className={props.CSSclass}>
+            {props.cards.map((card, i) => <Card
+                selectedCardOccurencies={props.selectedCardOccurencies}
+                receiveCardInformation={getCardInfoFromChild}
+                key={i}
+                selectedCards={props.selectedCards}
+                player={props.player}
+                npc={props.npc}
+                cardCode={card}
+                />)}
+        </div>
+    );
+}
 
 
 export default Hand;
