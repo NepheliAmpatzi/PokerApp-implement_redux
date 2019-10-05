@@ -10,7 +10,7 @@ class Card extends Component{
                 cardCode: this.props.cardCode,
                 selected: false
             }
-        }
+        };
         this.cardinformation = {
             cardCode: this.props.cardCode, 
             selected: true
@@ -46,14 +46,14 @@ class Card extends Component{
                 <a
                 onClick={this.selectedCard}
                 className={this.props.npc ?
-                "card back" : 
+                'card back' : 
                 this.state.cardInfo.selected &&
                 this.props.selectedCards.length <=3 &&
                 this.props.player.includes(this.state.cardInfo.cardCode) &&
                 Object.values(this.props.selectedCardOccurencies).every(value => value === 1) ?
-                    "selected-card card " + this.getCardCss(NumberL, SuitL) : "card " + this.getCardCss(NumberL, SuitL)}>
-                    <span className="rank">{NumberL}</span>
-                    <span className="suit">{this.getSuitSymbol(SuitL)}</span>
+                    'selected-card card ' + this.getCardCss(NumberL, SuitL) : 'card ' + this.getCardCss(NumberL, SuitL)}>
+                    <span className='rank'>{NumberL}</span>
+                    <span className='suit'>{this.getSuitSymbol(SuitL)}</span>
                 </a>
             </div>
         );
