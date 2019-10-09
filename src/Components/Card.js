@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import '../.././src/App.css'
+<<<<<<< HEAD
 import handevaluation from '../utils/handevaluation'
 
 class Card extends Component {
@@ -14,6 +15,28 @@ class Card extends Component {
     this.cardinformation = {
       cardCode: this.props.cardCode,
       selected: true
+=======
+import handEvaluation from '../utils/handEvaluation';
+
+class Card extends Component{
+    constructor(props){
+        super(props);
+        this.state = {
+            cardInfo: {
+                cardCode: this.props.cardCode,
+                selected: false
+            }
+        };
+        this.cardinformation = {
+            cardCode: this.props.cardCode, 
+            selected: true
+        };
+        this.selectedCard = this.selectedCard.bind(this);
+    }
+
+    getCardCss(num, suit) {
+        return 'rank-'+num.toString().toLowerCase()+' '+suit;
+>>>>>>> 6445cd8822e69349e3ce9d48b3ead191f157be63
     }
     this.selectedCard = this.selectedCard.bind(this)
   }
@@ -34,6 +57,7 @@ class Card extends Component {
     return suitHtml
   }
 
+<<<<<<< HEAD
   selectedCard () {
     this.setState({ cardInfo: this.cardinformation })
     this.props.receiveCardInformation(this.cardinformation)
@@ -61,3 +85,32 @@ class Card extends Component {
 }
 
 export default Card
+=======
+    selectedCard(){
+        this.setState({cardInfo: this.cardinformation});
+        this.props.receiveCardInformation(this.cardinformation);
+
+    }
+    render(){
+        const {NumberL, SuitL} = handEvaluation.getCardLiteralsFromCardCode(this.props.cardCode);
+        return (
+            <div className="playingCards fourColours ">
+                <a
+                onClick={this.selectedCard}
+                className={this.props.npc ?
+                'card back' : 
+                this.state.cardInfo.selected &&
+                this.props.selectedCards.length <=3 &&
+                this.props.player.includes(this.state.cardInfo.cardCode) &&
+                Object.values(this.props.selectedCardOccurencies).every(value => value === 1) ?
+                    'selected-card card ' + this.getCardCss(NumberL, SuitL) : 'card ' + this.getCardCss(NumberL, SuitL)}>
+                    <span className='rank'>{NumberL}</span>
+                    <span className='suit'>{this.getSuitSymbol(SuitL)}</span>
+                </a>
+            </div>
+        );
+    }   
+}
+       
+export default Card;
+>>>>>>> 6445cd8822e69349e3ce9d48b3ead191f157be63
