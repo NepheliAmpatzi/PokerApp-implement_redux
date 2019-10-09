@@ -1,6 +1,6 @@
-import React from 'react';
+import React from 'react'
 
-function Button({CSSclass, onClick, disableBtn, name}) {
+function Button ({ CSSclass, onClick, disableBtn, name }) {
   return (
     <button
       className={CSSclass}
@@ -9,7 +9,7 @@ function Button({CSSclass, onClick, disableBtn, name}) {
     >
       {name}
     </button>
-  );
+  )
 }
 
-export default Button;
+export default Button

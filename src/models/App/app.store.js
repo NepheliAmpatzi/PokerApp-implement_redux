@@ -1,12 +1,12 @@
-import { createStore, compose } from 'redux';
-import { initialState } from './app.reducer';
-import rootReducer from '../root.reducer';
+import { createStore, compose } from 'redux'
+import { initialState } from './app.reducer'
+import rootReducer from '../root.reducer'
 
-const enhancers = [];
-const { __REDUX_DEVTOOLS_EXTENSION__: devToolsExtension } = (global);
+const enhancers = []
+const { __REDUX_DEVTOOLS_EXTENSION__: devToolsExtension } = (global)
 
 if (devToolsExtension && typeof devToolsExtension === 'function') {
-  enhancers.push(devToolsExtension());
+  enhancers.push(devToolsExtension())
 }
 
 const store = createStore(
@@ -15,6 +15,6 @@ const store = createStore(
   compose(
     ...enhancers
   )
-);
+)
 
-export default store;
+export default store

@@ -1,5 +1,5 @@
-import handevaluation from '../../utils/handevaluation';
-import createDeck from '../../utils/createDeck';
+import handevaluation from '../../utils/handevaluation'
+import createDeck from '../../utils/createDeck'
 
 import {
   CHANGE_PLAYER_BALANCE,
@@ -7,12 +7,11 @@ import {
   FOLD,
   CALL,
   ON_PLAYER_RAISE
-} from './app.actions.creator';
+} from './app.actions.creator'
 
 import {
   getPlayerBalance, getNpcBalance, getRaiseAmount
-} from './app.stateSelectors';
-
+} from './app.stateSelectors'
 
 export const initialState = {
   app: {
@@ -36,7 +35,7 @@ export const initialState = {
       selected: false
     }
   }
-};
+}
 
 /**
  * A function that receives an action and changes the state
@@ -46,60 +45,58 @@ export const initialState = {
 export default function (state = initialState, action) {
   switch (action.type) {
     case (CHANGE_PLAYER_BALANCE): {
-      const playerBalance = getPlayerBalance(state);
-      const currentPlayerBalance = playerBalance + action.payload;
+      const playerBalance = getPlayerBalance(state)
+      const currentPlayerBalance = playerBalance + action.payload
       return {
         ...state,
-        currentPlayerBalance,
-      };
+        currentPlayerBalance
+      }
     }
     case (RAISE): {
-      const amountRaised = action.payload;
-      const playerBalance = getPlayerBalance(state);
-      const currentPlayerBalance = playerBalance - amountRaised;
+      const amountRaised = action.payload
+      const playerBalance = getPlayerBalance(state)
+      const currentPlayerBalance = playerBalance - amountRaised
       return {
         ...state,
         raiseAmount: amountRaised,
-        currentPlayerBalance,
-      };
+        currentPlayerBalance
+      }
     }
     case (FOLD): {
       return {
         ...state,
         disableBtn: true,
         npcWins: true
-      };
+      }
     }
     case (CALL): {
-      let result = createDeck.compareTwoHands(handevaluation.getEvaluationResult(state.playerHand), handevaluation.getEvaluationResult(state.npcHand)); 
-      if (result === 100){
+      const result = createDeck.compareTwoHands(handevaluation.getEvaluationResult(state.playerHand), handevaluation.getEvaluationResult(state.npcHand))
+      if (result === 100) {
         return {
           ...state,
           playerWins: true,
           currentPlayerBalance: state.currentPlayerBalance + state.playerBet + state.npcBet
-        };
-      }
-      else if (result === 0){
+        }
+      } else if (result === 0) {
         return {
           ...state,
           npcWins: true,
           currentNpcBalance: state.currentNpcBalance + state.playerBet + state.npcBet
-        };
-      }
-      else {
+        }
+      } else {
         return {
           ...state
-        };
+        }
       }
     }
     case (ON_PLAYER_RAISE): {
-      const currentNpcBalance = getNpcBalance(state);
-      const currentPlayerBalance = getPlayerBalance(state);
+      const currentNpcBalance = getNpcBalance(state)
+      const currentPlayerBalance = getPlayerBalance(state)
       const amountRaised = getRaiseAmount(state)
       console.log(currentNpcBalance, currentPlayerBalance, amountRaised)
     }
     default: {
-      return state;
+      return state
     }
   }
 }

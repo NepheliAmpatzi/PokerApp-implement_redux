@@ -1,23 +1,35 @@
-import React from 'react';
+import React, { Component } from 'react'
 import '../.././src/App.css'
 
-function Placeholder(props) {
-
-  function raiseInputCb(event) {
-    props.parentCb(event.target.value);
+class Placeholder extends Component() {
+  constructor (props) {
+    super(props)
+    this.state = {
+      raiseAmount: ''
+    }
+    this.raiseInputCb = this.raiseInputCb.bind(this)
   }
-  return (
-    <input
-      className={props.CSSclass}
-      type="number"
-      npc={props.npc}
-      value={props.value}
-      onChange={(value)=>raiseInputCb(value)}
-      readOnly={props.readOnly}>
-    </input>
-  );
 
+  raiseInputCb (event) {
+    this.setState({
+      raiseAmount: event.target.value
+    })
+    this.props.parentCb(event.target.value)
+  }
+
+  render () {
+    return (
+      <input
+        className={this.props.CSSclass}
+        type="number"
+        npc={this.props.npc}
+        value={this.props.value}
+        onChange={this.raiseInputCb}
+        readOnly={this.props.readOnly}>
+      </input>
+    )
+  }
 }
-//(value) => onValueChangeHandler(value)
+// (value) => onValueChangeHandler(value)
 
-export default Placeholder;
+export default Placeholder
