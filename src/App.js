@@ -150,7 +150,7 @@ class App extends Component {
   render() {
     return (
       <div className="app-style">
-        <ChangeUserBalanceButton /> {/* TODO: For REDUX TESTING PURPOSES, REMOVE LATER*/}
+        {/* <ChangeUserBalanceButton /> TODO: For REDUX TESTING PURPOSES, REMOVE LATER */}
         <Hand
           labelStyle="npc-label-style"
           label="NPC Balance"

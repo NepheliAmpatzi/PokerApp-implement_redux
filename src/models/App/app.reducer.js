@@ -1,7 +1,8 @@
 import {
   CHANGE_PLAYER_BALANCE,
   RAISE,
-  FOLD
+  FOLD,
+  CALL
 } from './app.actions.creator';
 
 import {
